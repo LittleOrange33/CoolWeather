@@ -27,12 +27,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        textView.setText(responseText);
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        textView.setText(responseText);
+//                }
+//                });
                 textView.setText(responseText);
             }
 

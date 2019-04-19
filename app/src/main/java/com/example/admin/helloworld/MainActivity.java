@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telecom.Call;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,10 +19,16 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
     private Button button;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        int id = intent.getIntExtra("id",0);
+        Log.i("接受id ","" + id);
         this.textView = (TextView) findViewById(R.id.getweather);
         this.button = (Button) findViewById(R.id.button);
         this.button.setOnClickListener(new View.OnClickListener() {

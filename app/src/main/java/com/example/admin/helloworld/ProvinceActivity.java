@@ -3,23 +3,38 @@ package com.example.admin.helloworld;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class ProvinceActivity extends AppCompatActivity {
+    private String[] ProvinceData = {
+            "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+            "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
+    };
+
+    private int[] ProvinceIds ={
+            0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,
+            0,0,0,0,0,0,0,
+    };
 
     private TextView textView;
     private Button button;
-
+    private ListView listView;
 
 
     @Override
@@ -34,9 +49,24 @@ public class MainActivity extends AppCompatActivity {
         this.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Main2Activity.class));
+                startActivity(new Intent(ProvinceActivity.this,CityActivity.class));
             }
         });
+
+        this.listView = findViewById(R.id.listview);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,ProvinceData);
+        listView.setAdapter(adapter);
+        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("点击",position + " : " + ProvinceActivity.this.ProvinceIds[position] + ProvinceActivity.this.ProvinceData[position]);
+                Intent intent = new Intent(ProvinceActivity.this,ProvinceActivity.class);
+                intent.putExtra("id",ProvinceIds[position]);
+                startActivity(intent);
+            }
+        });
+
+
         String weatherId = "CN101020200";
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=e3f1bbd1c57e4560a8b22478df974f25";
 

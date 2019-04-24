@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ProvinceActivity">
 
     <TextView
         android:id="@+id/getweather"
@@ -22,5 +22,11 @@
         android:layout_height="36dp"
         android:text="Button"
         tools:layout_editor_absoluteX="122dp" />
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
 
 </android.support.constraint.ConstraintLayout>

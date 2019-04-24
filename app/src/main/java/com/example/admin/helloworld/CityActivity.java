@@ -21,12 +21,12 @@ import java.util.List;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class Main2Activity extends AppCompatActivity {
-    private String[] data = {
+public class CityActivity extends AppCompatActivity {
+    private String[] CityData = {
             "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
             "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
     };
-    private int[] ids = {
+    private int[] CityIds = {
             0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,
@@ -48,27 +48,28 @@ public class Main2Activity extends AppCompatActivity {
         this.textView = (TextView) findViewById(R.id.getmessage);
         this.listView = (ListView) findViewById(R.id.listview);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,CityData);
         listView.setAdapter(adapter);
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("点击",position + " : " + Main2Activity.this.ids[position] + Main2Activity.this.data[position]);
-                Intent intent = new Intent(Main2Activity.this,MainActivity.class);
-                intent.putExtra("id",Main2Activity.this.ids[position]);
+                Log.v("点击",position + " : " + CityActivity.this.CityIds[position] + CityActivity.this.CityData[position]);
+                Intent intent = new Intent(CityActivity.this,ProvinceActivity.class);
+                Intent intent2 = new Intent(CityActivity.this,CountyActivity.class);
+                intent.putExtra("id",CityActivity.this.CityIds[position]);
+                intent2.putExtra("CityId",CityIds[position]);
+                intent2.putExtra("ProvinceId",ProvinceId);
                 startActivity(intent);
+                startActivity(new Intent(CityActivity.this,CountyActivity.class));
             }
         });
-// String weatherId = "CN101020200";
-//        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=e3f1bbd1c57e4560a8b22478df974f25";
           String CityUrl =  "http://guolin.tech/api/china";
           HttpUtil.sendOkHttpRequest(CityUrl, new Callback() {
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
 
                 final String responseText = response.body().string();
-               // String[] data= ToJson(responseText);
-               // Main2Activity.this.data = result;
+
                 ToJson(responseText);
                 //System.out.print(data);
                 runOnUiThread(new Runnable() {
@@ -88,8 +89,8 @@ public class Main2Activity extends AppCompatActivity {
                       for (int i = 0; jsonArray.length() > i; i++) {
                           JSONObject jsonObject = null;
                           jsonObject = jsonArray.getJSONObject(i);
-                          Main2Activity.this.data[i] = jsonObject.getString("name");
-                          Main2Activity.this.ids[i] = jsonObject.getInt("id");
+                          CityActivity.this.CityData[i] = jsonObject.getString("name");
+                          CityActivity.this.CityIds[i] = jsonObject.getInt("id");
                       }
                   } catch (JSONException e) {
                       e.printStackTrace();

@@ -7,23 +7,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Callback;
 import okhttp3.Response;
 
 public class ProvinceActivity extends AppCompatActivity {
-    private String[] ProvinceData = {
+    private String[] ProvinceDatas = {
             "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
             "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
     };
-
-    private int[] ProvinceIds ={
+    private int[] ProvinceIds = {
             0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,
             0,0,0,0,0,0,0,
@@ -32,60 +35,69 @@ public class ProvinceActivity extends AppCompatActivity {
             0,0,0,0,0,0,0,
     };
 
-    private TextView textView;
-    private Button button;
+    private List<String> data2 = new ArrayList<String>();
     private ListView listView;
-
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Intent intent = getIntent();
-        int id = intent.getIntExtra("id",0);
-        Log.i("接受id ","" + id);
-        this.textView = (TextView) findViewById(R.id.getweather);
-        this.button = (Button) findViewById(R.id.button);
-        this.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ProvinceActivity.this,CityActivity.class));
-            }
-        });
+        setContentView(R.layout.activity_main2);
 
-        this.listView = findViewById(R.id.listview);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1,ProvinceData);
+        this.textView = (TextView) findViewById(R.id.getmessage);
+        this.listView = (ListView) findViewById(R.id.listview);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,ProvinceDatas);
         listView.setAdapter(adapter);
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("点击",position + " : " + ProvinceActivity.this.ProvinceIds[position] + ProvinceActivity.this.ProvinceData[position]);
-                Intent intent = new Intent(ProvinceActivity.this,ProvinceActivity.class);
-                intent.putExtra("id",ProvinceIds[position]);
-                startActivity(intent);
+                Log.v("点击",position + " : " + ProvinceActivity.this.ProvinceIds[position] + ProvinceActivity.this.ProvinceDatas[position]);
+                Intent intent2 = new Intent(ProvinceActivity.this,CityActivity.class);
+                intent2.putExtra("ProvinceIds",ProvinceIds[position]);
+                startActivity(intent2);
             }
         });
-
-
-        String weatherId = "CN101020200";
-        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=e3f1bbd1c57e4560a8b22478df974f25";
-
-        HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
+          String CityUrl =  "http://guolin.tech/api/china";
+          HttpUtil.sendOkHttpRequest(CityUrl, new Callback() {
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
+
                 final String responseText = response.body().string();
+
+                ToJson(responseText);
+                //System.out.print(data);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         textView.setText(responseText);
-                }
+                        adapter.notifyDataSetChanged();
+                    }
                 });
 //                textView.setText(responseText);
             }
 
-            @Override
+              private void ToJson(String responseText) {
+                  JSONArray jsonArray = null;
+                  try {
+                      jsonArray = new JSONArray(responseText);
+             //         String[] result = new String[jsonArray.length()];
+                      for (int i = 0; jsonArray.length() > i; i++) {
+                          JSONObject jsonObject = null;
+                          jsonObject = jsonArray.getJSONObject(i);
+                          ProvinceActivity.this.ProvinceDatas[i] = jsonObject.getString("name");
+                          ProvinceActivity.this.ProvinceIds[i] = jsonObject.getInt("id");
+                      }
+                  } catch (JSONException e) {
+                      e.printStackTrace();
+                  }
+
+              }
+
+
+              @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                   e.printStackTrace();
+                e.printStackTrace();
             }
         });
     }

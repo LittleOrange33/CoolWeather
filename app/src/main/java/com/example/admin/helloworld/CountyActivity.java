@@ -62,7 +62,6 @@ public class CountyActivity extends AppCompatActivity {
                 Intent intent = new Intent(CountyActivity.this,WeatherActivity.class);
                 intent.putExtra("WeatherIds",WeatherIds[position]);
                 startActivity(intent);
-                //startActivity(new Intent(ProvinceActivity.this,CountyActivity.class));
             }
         });
         String CountyUrl =  "http://guolin.tech/api/china/" + ProvinceIds + "/" + CityIds;
@@ -74,7 +73,6 @@ public class CountyActivity extends AppCompatActivity {
                 final String responseText = response.body().string();
 
                 ToJson(responseText);
-                //System.out.print(data);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -82,14 +80,12 @@ public class CountyActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                     }
                 });
-//                textView.setText(responseText);
             }
 
             private void ToJson(String responseText) {
                 JSONArray jsonArray = null;
                 try {
                     jsonArray = new JSONArray(responseText);
-                    //         String[] result = new String[jsonArray.length()];
                     for (int i = 0; jsonArray.length() > i; i++) {
                         JSONObject jsonObject = null;
                         jsonObject = jsonArray.getJSONObject(i);

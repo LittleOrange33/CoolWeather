@@ -25,42 +25,40 @@ public class ProvinceActivity extends AppCompatActivity {
     public static final String COUNTY = "county";
     private List<Integer> Ids = new ArrayList<Integer>();
     private String currentlevel = PROVINCE;
-    private int Id = 0;
+    private int AreaIdList = 0;
     private int ProvinceId = 0;
     private int CityId = 0;
-    private List<String> CountyData = new ArrayList<String>();
-    private List<String> WeatherIds = new ArrayList<String>();
-    private ListView listView;
-    private List<String> Data = new ArrayList<>();
-
+    private List<String> WeatherIdList = new ArrayList<String>();
+    private List<String> AreaNameList = new ArrayList<>();
+    private ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        this.listView = (ListView) findViewById(R.id.listview);
+        this.listview = (ListView) findViewById(R.id.listview);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Data);
-        listView.setAdapter(adapter);
-        this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, AreaNameList);
+        listview.setAdapter(adapter);
+        this.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Log.v("点击", position + " : " + ProvinceActivity.this.Ids.get(position) + ":" + ProvinceActivity.this.Data.get(position));
+                //Log.v("点击", position + " : " + ProvinceActivity.this.Ids.get(position) + ":" + ProvinceActivity.this.AreaNameList.get(position));
 
                 if(currentlevel == PROVINCE) {
                     currentlevel = CITY;
-                    Id = ProvinceActivity.this.Ids.get(position);
-                    ProvinceId = Id;
+                    AreaIdList = ProvinceActivity.this.Ids.get(position);
+                    ProvinceId = AreaIdList;
                 }
 
                 else if(currentlevel == CITY) {
                     currentlevel = COUNTY;
-                    Id = ProvinceActivity.this.Ids.get(position);
-                    CityId = Id;
+                    AreaIdList = ProvinceActivity.this.Ids.get(position);
+                    CityId = AreaIdList;
                 }
 
                 else if(currentlevel == COUNTY) {
                     Intent intent = new Intent(ProvinceActivity.this,WeatherActivity.class);
-                    intent.putExtra("WeatherIds",WeatherIds.get(position));
+                    intent.putExtra("WeatherIdList", WeatherIdList.get(position));
                     startActivity(intent);
                 }
                 getData(adapter);
@@ -95,18 +93,18 @@ public class ProvinceActivity extends AppCompatActivity {
     }
     private void ToJson(String responseText) {
         JSONArray jsonArray = null;
-        this.Data.clear();
+        this.AreaNameList.clear();
         this.Ids.clear();
-        this.WeatherIds.clear();
+        this.WeatherIdList.clear();
         try {
             jsonArray = new JSONArray(responseText);
             for (int i = 0; jsonArray.length() > i; i++) {
                 JSONObject jsonObject = null;
                 jsonObject = jsonArray.getJSONObject(i);
-                this.Data.add(jsonObject.getString("name"));
+                this.AreaNameList.add(jsonObject.getString("name"));
                 this.Ids.add(jsonObject.getInt("id"));
                 if(jsonObject.has("weather_id"))
-                    this.WeatherIds.add(jsonObject.getString("weather_id"));
+                    this.WeatherIdList.add(jsonObject.getString("weather_id"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

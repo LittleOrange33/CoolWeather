@@ -23,13 +23,16 @@ public class ProvinceActivity extends AppCompatActivity {
     public static final String PROVINCE = "province";
     public static final String CITY = "city";
     public static final String COUNTY = "county";
-    private List<Integer> Ids = new ArrayList<Integer>();
+
     private String currentlevel = PROVINCE;
     private int AreaIdList = 0;
     private int ProvinceId = 0;
     private int CityId = 0;
+
+    private List<Integer> Ids = new ArrayList<Integer>();
     private List<String> WeatherIdList = new ArrayList<String>();
     private List<String> AreaNameList = new ArrayList<>();
+    
     private ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

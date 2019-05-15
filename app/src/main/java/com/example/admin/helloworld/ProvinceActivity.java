@@ -3,6 +3,7 @@ package com.example.admin.helloworld;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,7 +33,7 @@ public class ProvinceActivity extends AppCompatActivity {
     private List<Integer> Ids = new ArrayList<Integer>();
     private List<String> WeatherIdList = new ArrayList<String>();
     private List<String> AreaNameList = new ArrayList<>();
-    
+
     private ListView listview;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class ProvinceActivity extends AppCompatActivity {
         this.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Log.v("点击", position + " : " + ProvinceActivity.this.Ids.get(position) + ":" + ProvinceActivity.this.AreaNameList.get(position));
+                Log.v("点击", position + " : " + ProvinceActivity.this.Ids.get(position) + ":" + ProvinceActivity.this.AreaNameList.get(position));
 
                 if(currentlevel == PROVINCE) {
                     currentlevel = CITY;
